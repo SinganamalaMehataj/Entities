@@ -1,0 +1,175 @@
+create table Institution_Registration(
+Institute_Id number(10) ,
+State varchar(15) default 'MAHARASHTRA',
+Institute_Name varchar(50),
+Institute_Code number(10) constraint Ins_reg_Instcode_pk primary Key,
+DISE_Code number(11) NOT NULL,
+University_State varchar(20) NOT NULL,
+University_Name varchar(50) NOT NULL,
+Set_Password varchar(8) ,
+Confirm_Password varchar(8),
+Inst_Estb_Certificate varchar(8),
+Board_affi_certificate varchar(8)
+);
+
+CREATE SEQUENCE sequence_inst
+start with 1
+increment by 1
+minvalue 0
+maxvalue 100
+cycle;
+
+------------STUDENT REGISTRATON-----------------
+create table Student_Registration(
+student_id number(10) constraint Student_id_pk Primary Key,
+domicile_state varchar(50) NOT NULL,
+student_name varchar(50) NOT NULL,
+gender varchar(10) NOT NULL,
+mobile_number number(10) UNIQUE,
+email_id varchar(50) NOT NULL Unique ,
+Institute_Code number(10) NOT NULL,
+aadhar_number number(20) Unique,
+password varchar(30) NOT NULL,
+Institute_Verification number(1) check(Institute_Verification in ('1','0')),
+Nodal_Verification number(1) check(Nodal_Verification in ('1','0')),
+Ministry_Verification number(1) check(Ministry_Verification in ('1','0')),
+constraint Reg_Ins_code foreign key(Institute_Code) references Institution_Registration(Institute_Code),
+constraint Reg_AadharNumber  foreign key(aadhar_number) references Aadhar(Aadhar_no)
+);
+
+CREATE SEQUENCE sequence_student
+start with 1
+increment by 1
+minvalue 0
+maxvalue 100
+cycle;
+
+
+----------------------------------AADHAR TABLE----------------------------
+create table Aadhar(
+Aadhar_no Number ,
+Name varchar2(40) NOT NULL,
+Mother_name varchar2(40) NOT NULL,
+Date_of_Birth  date  NOT NULL,
+Gender varchar2(1) NOT NULL,
+Door_no varchar(50) NOT NULL,
+Street varchar2(40) NOT NULL,
+City varchar2(20) NOT NULL,
+District varchar2(40)NOT NULL,
+state varchar2(40) NOT NULL,
+pin_code Number NOT NULL,
+Mobile_no Number NOT NULL UNIQUE,
+constraint  "AADHAR_PK" primary key (Aadhar_no)
+);
+------------------------SCHEMES-----------------------------------------------
+
+
+CREATE table "SCHEME" (
+    "SID"                   NUMBER NOT NULL,
+    "RELIGION"              VARCHAR2(40) NOT NULL,
+    "COMMUNITY"             VARCHAR2(40) NOT NULL,
+    "FATHER_NAME"           VARCHAR2(40) NOT NULL,
+    "MOTHER_NAME"           VARCHAR2(40) NOT NULL,
+    "INSTITUTE_NAME"        VARCHAR2(40) NOT NULL,
+    "PRESENT_COURSE"        VARCHAR2(40) NOT NULL,
+    "PRESENT_COURSE_YEAR"   NUMBER NOT NULL,
+    "FAMILY_INCOME"         NUMBER NOT NULL,
+    "MODE_OF_STUDY"         VARCHAR2(40) NOT NULL,
+    "START_DATE"            DATE NOT NULL,
+    "UNIVERSITY"            VARCHAR2(40) NOT NULL,
+    "PREVIOUS_COURSE"       VARCHAR2(40) NOT NULL,
+    "PREVIOUS_PASSING_YEAR" NUMBER NOT NULL,
+    "PREVIOUS_PERCENTAGE"   NUMBER NOT NULL,
+    "TENTH_ROLL_NUMBER"     NUMBER NOT NULL UNIQUE,
+    "TENTH_BOARD"           VARCHAR2(40) NOT NULL,
+    "TENTH_PASS_YEAR"       NUMBER NOT NULL,
+    "TENTH_PERCENTAGE"      NUMBER NOT NULL,
+    "ROLL_NUMBER_12"        NUMBER NOT NULL UNIQUE,
+    "BOARD_12"              VARCHAR2(40) NOT NULL,
+    "PASS_YEAR_12"          NUMBER NOT NULL,
+    "PERCENTAGE_12"         NUMBER NOT NULL,
+    "ADMISSION_FEE"         NUMBER NOT NULL,
+    "TUTION_FEE"            NUMBER NOT NULL,
+    "OTHER_FEE"             NUMBER NOT NULL,
+    "IS-DISABLED"           CHAR(10),
+    "TYPE_OF_DISABILITY"    VARCHAR2(40),
+    "DISABILITY_PERCENTAGE" NUMBER,
+    "MARITAL_STATUS"        CHAR(100) NOT NULL,
+    "PARENTS_PROFESSION"    VARCHAR2(40) NOT NULL,
+    "STATE"                 VARCHAR2(40) NOT NULL,
+    "DISTRICT"              VARCHAR2(40) NOT NULL,
+    "TALUKA"                 VARCHAR2(40) NOT NULL,
+    "HOUSE_NUMBER"          VARCHAR2(40) NOT NULL,
+    "STREET_NUMBER"         NUMBER NOT NULL,
+    "PINCODE"               NUMBER NOT NULL,
+    "SCHEME_APPLIED"        VARCHAR2(40) NOT NULL,
+    constraint  "SCHEME_PK" primary key ("SID")
+);
+
+
+
+
+-------------------Login Table---------------------------
+create table Login(
+Nodal_id number(10) Unique NOT NULL,
+Nodal_pass varchar2(10) NOT NULL,
+Nodal_name varchar2(25) NOT NULL,
+Ministry_id number(10) Unique NOT NULL,
+Ministry_pass varchar2(10) NOT NULL,
+Ministry_name varchar(25) NOT NULL
+);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---------------------------Using Procedures------------------------------
+create or replace procedure Proc_Inst
+(
+FF Institute_Id number(10) %type,
+A Institution_Registeration.State %type,
+B Institution_Registeration.Institute_Name %type,
+C Institution_Registeration.Institute_Code %type,
+D Institution_Registeration.DISE_Code %type,
+E Institution_Registeration.University_State %type,
+F Institution_Registeration.University_Name %type,
+G Institution_Registeration.Set_Password %type,
+H Institution_Registeration.Confirm_Password%type,
+I Institution_Registeration.Institute_Establishment_Certificate  varbinary(max),
+J Institution_Registeration.University/Board affiliation certificate varbinary(max),
+)
+as
+begin
+insert into Institution_Registeration(Institute_Id,State,Institute_Name,Institute_Code,
+				DISE_Code,University_State,University_Name,Set_Password,Confirm_Password,
+				Institute_Establishment_Certificate,University/Board_affiliation_certificate)
+values(FF,A,B,C,D,E,F,G,H,I,J);
+commit;
+end;
+/
+----------------------------------------------------------------------Institution_Registration------------------------------------------------------
+insert into Institution_Registration(Institute_Id,State,Institute_Name,Institute_Code,DISE_Code,University_State,University_Name,Set_Password,Confirm_Password)
+values(1,'Assam','JSpiders',50089,554478995,'Assam','JNTUH','Setpass1','Setpass1');
+
+
+insert into Institution_Registration(Institute_Id,State,Institute_Name,Institute_Code,DISE_Code,University_State,University_Name,Set_Password,Confirm_Password)
+values(2,'Karnataka','QSpiders',50090,554878995,'Karnataka','JNTUK','Setpass2','Setpass2');
+------------------------------------------------STUDENT_REGISTRATON--------------------------------------------
+insert into STUDENT_REGISTRATION(Student_id,Domicile_State,Student_name,Gender,Mobile_Number,Email_id,Institute_code,Aadhar_number,password,Institute_Verification,Nodal_Verification,Ministry_Verification)
+values(1,'Andhra','Pooja','Male',8008506629,'rohan1@gmail.com',50089,728458218383,'pooja@123',1,0,0);
+
+
+------------------------------------------------AADHAR--------------------------------------------
+insert into Aadhar()
